@@ -35,6 +35,6 @@ app.get("/", (req, res) => {
 /*  */
 
 const Port=3000;
-db.sync({/* force: true */}).then(function(){
+db.sync({ /* force: true */ }).then(function(){
     app.listen(Port, () => { console.log(`Server is running on port ${Port}.`); });
 })

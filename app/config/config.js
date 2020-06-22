@@ -11,5 +11,10 @@ var sequelize = new Sequelize('postgres://calendar:calendar@localhost:5432/calen
         }
     }
 }); 
-
+const db = {};
+ 
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+db.user = require('../model/User.js')(sequelize, Sequelize);
+exports.db;
 module.exports = sequelize;
