@@ -1,17 +1,22 @@
 {
-  "name": "calenda-api",
+  "name": "node-js-jwt-auth",
   "version": "1.0.0",
   "private": true,
-  "description": "Calendar Api server",
+  "description": "Node.js for JWT Authentication app Calendar",
+  "main": "server.js",
   "scripts": {
     "prestart": "npm install",
     "start": "nodemon server"
   },
   "keywords": [
     "node.js",
-    "express"
+    "jwt",
+    "authentication",
+    "express",
+    "postgresql"
   ],
-  "license": "MIT",
+  "author": "alex",
+  "license": "ISC",
   "devDependencies": {
     "nodemon": "^2.0.4"
   },
@@ -21,9 +26,9 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "morgan": "^1.10.0",
-    "pg": "^8.2.1",
-    "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.12"
+    "ldap2date": "^2.0.0",
+    "ldapjs": "^2.1.1",
+    "pg": "^8.3.3",
+    "pg-hstore": "^2.3.3"
   }
 }
