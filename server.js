@@ -2,6 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cfg = require("./app/config/db.config"); // database
+let path = require('path');
+
 
 const app = express();
 app.use(cors());
@@ -16,6 +18,8 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET, PATCH, PUT, POST, DELETE, OPTIONS");
   next();   
 });
+app.use('/static', express.static('public/images'));
+
 
 /* Routes */
 app.get("/", (req, res) => { res.json({ message: "Welcome to application." }); });
