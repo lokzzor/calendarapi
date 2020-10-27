@@ -35,6 +35,17 @@ if (cfg.enable) {
     router.get('/weather', function (req, res, next) {
         const api_key='596876ae90ac6935eb72f9671488da95';
         const id_key='Dubna';
+        var hour = new Date().getHours();
+
+        var greeting;
+
+        if (hour >= 6 && hour < 18)
+            greeting = "/static/daycloud.jpg";
+        else if (hour >= 18 && hour < 24)
+            greeting = "/static/night.jpg";
+        else if (hour >= 24 && hour < 5)
+            greeting = "/static/night.jpg";
+        
         axios.get('https://api.openweathermap.org/data/2.5/weather?q='+id_key+'&appid='+api_key+'&units=metric')  .then(function (response) {
             // handle success
             var weather={};
@@ -47,8 +58,8 @@ if (cfg.enable) {
             weather.descrip=response.data.weather[0].description;
             weather.main=response.data.weather[0].main;
             weather.icon=response.data.weather[0].icon;
-            
-            if(response.data.weather[0].icon ="01d"){ weather.icon_url= "/static/01d.svg";}
+            weather.background=greeting;
+            if(response.data.weather[0].icon =="01d"){ weather.icon_url= "/static/01d.svg";}
             else if(response.data.weather[0].icon ="01n"){ weather.icon_url= "/static/01n.svg";}
             else if(response.data.weather[0].icon ="02d"){ weather.icon_url= "/static/02d.svg";}
             else if(response.data.weather[0].icon ="02n"){ weather.icon_url= "/static/02n.svg";}
