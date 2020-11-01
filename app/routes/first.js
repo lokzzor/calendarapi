@@ -35,16 +35,6 @@ if (cfg.enable) {
     router.get('/weather', function (req, res, next) {
         const api_key='596876ae90ac6935eb72f9671488da95';
         const id_key='Dubna';
-        var hour = new Date().getHours();
-
-        var greeting;
-
-        if (hour >= 6 && hour < 18)
-            greeting = "/static/daycloud.jpg";
-        else if (hour >= 18 && hour < 24)
-            greeting = "/static/night.jpg";
-        else if (hour >= 24 && hour < 5)
-            greeting = "/static/night.jpg";
         
         axios.get('https://api.openweathermap.org/data/2.5/weather?q='+id_key+'&appid='+api_key+'&units=metric')  .then(function (response) {
             // handle success
@@ -61,25 +51,12 @@ if (cfg.enable) {
             weather.descrip=response.data.weather[0].description;
             weather.main=response.data.weather[0].main;
             weather.icon=response.data.weather[0].icon;
-            weather.background=greeting;
+            weather.background="";
             weather.windicon="/static/cloud.svg";
             weather.cloudicon="/static/cloud-computing.svg";
             weather.rainicon="/static/rain.svg";
             weather.fillicon="/static/celsius.svg";
-            if(response.data.weather[0].icon =="01d"){ weather.icon_url= "/static/01d.svg";}
-            else if(response.data.weather[0].icon =="01n"){ weather.icon_url= "/static/01n.svg";}
-            else if(response.data.weather[0].icon =="02d"){ weather.icon_url= "/static/02d.svg";}
-            else if(response.data.weather[0].icon =="02n"){ weather.icon_url= "/static/02n.svg";}
-            else if(response.data.weather[0].icon =="03d" || response.data.weather[0].icon =="03n"){ weather.icon_url= "/static/03d.svg";}
-            else if(response.data.weather[0].icon =="04d" || response.data.weather[0].icon =="04n"){ weather.icon_url= "/static/03d.svg";}
-            else if(response.data.weather[0].icon =="09d" || response.data.weather[0].icon =="09n"){ weather.icon_url= "/static/09d.svg";}
-            else if(response.data.weather[0].icon =="10d"){ weather.icon_url= "/static/10d.svg";}
-            else if(response.data.weather[0].icon =="10n"){ weather.icon_url= "/static/9n.svg";}
-            else if(response.data.weather[0].icon =="11d" || response.data.weather[0].icon=="11n"){ weather.icon_url= "/static/11d.svg";}
-            else if(response.data.weather[0].icon =="13d" || response.data.weather[0].icon=="13n"){ weather.icon_url= "/static/13d.svg";}
-            else if(response.data.weather[0].icon =="50d" || response.data.weather[0].icon=="50n"){ weather.icon_url= "/static/50d.svg";}
-            else {weather.icon_url="other"}
-            
+            weather.icon_obj=response.data.weather[0].icon;   
             res.send(weather);
           })
           .catch(function (error) {
