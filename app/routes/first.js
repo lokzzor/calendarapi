@@ -12,6 +12,16 @@ if (cfg.enable) {
             if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
         });
     });
+    router.get('/room_event', function (req, res, next) {
+        pool.query("SELECT room_name, building_number, room_number FROM room_ ", function (err, result) {
+            if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
+        });
+    });
+    router.get('/room_building', function (req, res, next) {
+        pool.query("SELECT building_number, COUNT(room_number) FROM room_ GROUP BY building_number", function (err, result) {
+            if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
+        });
+    });
     router.get('/event', function (req, res, next) {
         pool.query("SELECT event_id, room_name, event_name, person_id, first_date, time_start, time_end, day_of_week, last_date, admin_id FROM event_;", function (err, result) {
             if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
