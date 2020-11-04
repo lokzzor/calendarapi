@@ -13,7 +13,7 @@ if (cfg.enable) {
         });
     });
     router.get('/room_event', function (req, res, next) {
-        pool.query("SELECT room_name, building_number, room_number FROM room_ ", function (err, result) {
+        pool.query("SELECT room_name, COUNT(event_name) as countevent FROM event_ GROUP BY room_name;", function (err, result) {
             if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
         });
     });
@@ -51,7 +51,6 @@ if (cfg.enable) {
             //console.log(response.data);
             var weather={};
             weather= new Object();
-            weather.cloud=response.data.clouds.all
             weather.wind=response.data.wind.speed
             weather.temp=Math.round(response.data.main.temp);
             weather.tempfeels_like=Math.round(response.data.main.feels_like);
@@ -62,10 +61,6 @@ if (cfg.enable) {
             weather.main=response.data.weather[0].main;
             weather.icon=response.data.weather[0].icon;
             weather.background="";
-            weather.windicon="/static/cloud.svg";
-            weather.cloudicon="/static/cloud-computing.svg";
-            weather.rainicon="/static/rain.svg";
-            weather.fillicon="/static/celsius.svg";
             weather.icon_obj=response.data.weather[0].icon;   
             res.send(weather);
           })
