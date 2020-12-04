@@ -6,16 +6,22 @@ const jwt = require("jsonwebtoken");
 /* const db = require("../models/index");
  */
 module.exports.login_ldap = (req, res, next) => { 
-    let username = req.body.username;
-    let dn = 'uid=' + username + ',' + cfg.users; //console.log(dn);
-    let password = req.body.password;
-    var profile; var work;
-    let ldapclient = ldap.createClient({ url: cfg.url });
+    let username = req.body.username; let password = req.body.password;
+    let dn = 'uid=' + username + ',' + cfg.users;
+    var profile;
+    let ldapclient = ldap.createClient({ url: cfg.url, timeout: 5000, connectTimeout: 10000, reconnect: true });
     ldapclient.bind(dn, password, function (err) {
         if (err) {
-            res.send(err); work=0;
+            console.log(err.message);
+            res.send(err);
         } else {
-            let opts = {}; work=1;
+            console.log('---- connected to ldap ----');
+            let opts = {
+                filter: "(&(objectClass=user))",
+                scope: "sub",
+                client: "*",
+                attributes: ['objectGUID', 'sAMAccountName', 'cn', 'mail', 'manager', 'memberOf']
+            };
             ldapclient.search(dn, opts, function (err, ldapres) {
                 ldapres.on('searchEntry', function (entry) {
                      //console.log('entry: ' + JSON.stringify(entry.object));

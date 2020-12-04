@@ -42,6 +42,11 @@ if (cfg.enable) {
             if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
         });
     });
+    router.get('/itemevent', function (req, res, next) {
+        pool.query("SELECT event_name FROM event_dictionary;", function (err, result) {
+            if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
+        });
+    });
     router.get('/weather', function (req, res, next) {
         const api_key='596876ae90ac6935eb72f9671488da95';
         const id_key='Dubna';
