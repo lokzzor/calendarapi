@@ -3,11 +3,24 @@ const router = express.Router()
 
 const checkToken = require('../middleware/checkToken')
 const ldap = require('../middleware/login_ldap');
+const bcrypt = require ('bcrypt');
+let cfg = require('../config/db.config');
 
+const jwt = require('jsonwebtoken');
 
-
-router.post("/login", ldap.login_ldap);
-
+const generateAccessToken = () => {
+    //return jwt.sign(,cfg.secret)
+}
+router.post('/login', async function (req, res, next) {
+    const body = req.body;
+    const hashPassword= await bcrypt.hashSync(req.body.ss.password, 10);
+    console.log(hashPassword);
+    var passwordIsValid = await bcrypt.compareSync(req.body.ss.password, hashPassword);
+    if (!passwordIsValid) {
+        console.log("bad")
+    }
+    const token = generateAccessToken();
+});
 
 
 /* const { verifySignUp } = require("../middleware");

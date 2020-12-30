@@ -4,7 +4,7 @@ module.exports = {
     host: "bmn-web.jinr.ru",
     user: "calendar",
     password: "calendar",
-    database: "calendartest2",
+    database: "calendardb",
     dialect: "postgres",
     port: "8443",
     max: 10,
@@ -13,13 +13,13 @@ module.exports = {
     connectionTimeoutMillis: 2000
   },
   url: 'ldaps://bmn-ipa.jinr.ru:389',
-  realm: 'BMN.JINR.RU',
-  base: 'cn=accounts,dc=bmn,dc=jinr,dc=ru',
-  users: 'cn=users,cn=accounts,dc=bmn,dc=jinr,dc=ru',
-  groups: 'cn=groups,cn=accounts,dc=bmn,dc=jinr,dc=ru',
+  realm: 'JINR.RU',
+  base: 'cn=accounts,dc=jinr,dc=ru',
+  users: 'cn=users,cn=accounts,dc=jinr,dc=ru',
+  groups: 'cn=groups,cn=accounts,dc=jinr,dc=ru',
   admin_group: 'bmnunidbwriter',
   guest_group: 'bmnunidbreader',
   allowed: ['*'],
-  secret: "secretcode",
+  secret: "secret-key-code",
   enable: true
 };

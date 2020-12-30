@@ -25,9 +25,12 @@ app.use('/static', express.static('public/images'));
 app.get("/", (req, res) => { res.json({ message: "Welcome to application." }); });
 
 const auth = require('./app/routes/auth.routes');
+const calendar = require('./app/routes/calendar');
 const first = require('./app/routes/first');
-/* app.use('/api/auth', auth);  */
-app.use('/api/get', first); 
+app.use('/api/auth', auth);
+app.use('/api/get', first);
+ 
+app.use('/api/get', calendar);
 
 /* PORT */
 const PORT = process.env.PORT || 8080;

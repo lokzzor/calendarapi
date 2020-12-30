@@ -1,5 +1,4 @@
 const ldap = require('ldapjs');
-const ldap2date = require('ldap2date');
 let cfg = require('../config/db.config')
 const jwt = require("jsonwebtoken");
 
@@ -43,11 +42,7 @@ module.exports.login_ldap = (req, res, next) => {
                         if (groups[i] === cfg.admin_group) isAdmin = true;
                         if (groups[i] === cfg.chief_group) isGuest = true;
                     }
-                    if (obj.krbLastSuccessfulAuth)
-                        obj.krbLastSuccessfulAuth = ldap2date.parse(obj.krbLastSuccessfulAuth)
-
-                    if (obj.krbLastFailedAuth)
-                        obj.krbLastFailedAuth = ldap2date.parse(obj.krbLastFailedAuth)
+ 
                     // creating profile
                     profile = {
                         dn: obj.dn,
@@ -62,8 +57,6 @@ module.exports.login_ldap = (req, res, next) => {
                         groups: groups,
                         loginShell: obj.loginShell,
                         homeDirectory: obj.homeDirectory,
-                        krbPasswordExpiration: ldap2date.parse(obj.krbPasswordExpiration),
-                        krbLastPwdChange: ldap2date.parse(obj.krbLastPwdChange),
                         krbExtraData: obj.krbExtraData,
                         krbLastSuccessfulAuth: obj.krbLastSuccessfulAuth,
                         krbLastFailedAuth: obj.krbLastFailedAuth,
@@ -87,25 +80,6 @@ module.exports.login_ldap = (req, res, next) => {
                 });
                 ldapres.on('end', function (result) {
                     console.log('ldap: User "' + username + '" login with status ' + result.status);
-/*                     db.user.findAll({ where: { person_name: profile.uid } })
-                    .then( function(user)  {
-                        if (user.length != 0) {
-                            console.log('have user');
-                            return res.send({ 
-                                message: "User found.",
-                                id_token: jwt.sign(profile, cfg.jwt.secret, { expiresIn: "1 day" })
-                            });
-                        } else{
-                            console.log("no user");
-                            const user = db.user.create({ person_name: profile.uid, email: profile.mail, is_admin: profile.isAdmin, is_active: 1 });
-                            return res.send({ 
-                                message: "User Not found.",
-                                id_token: jwt.sign(profile, cfg.jwt.secret, { expiresIn: "1 day" })
-                            });
-                        }
-                    }) .catch( error => {
-                        res.status( 400 ).send( error )
-                    }) */
                     ldapclient.unbind();
                 });
             });
