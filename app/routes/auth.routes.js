@@ -37,34 +37,34 @@ async (req, res, next) => {
 
 router.post('/login', async (req, res, next) => { 
     const pool =new Pool (cfg.pool);
-    try{
-        const {login, password} = req.body;
-        const user = await pool.query("SELECT login_name, login_pass, person_name, email, is_admin, is_active FROM person_ where login_name ="+"'"+login+"'");
-        if (user.rows.length == 0){ 
-            return res.status(404).json({message: 'User not found'})
-        }
-        const isPassValid = bcrypt.compareSync(password, user.rows[0].login_pass);
-        if (!isPassValid){
-            return res.status(400).json({message: 'Invalid password'})
-        }
-        const token = jwt.sign(
-            { login_name:user.rows[0].login_name},
-              cfg.secret,
-            { expiresIn:'2h'}
-        )
-        return res.json({
-            token,
-            user: {
-                loginName: user.rows[0].login_name,
-                personName: user.rows[0].person_name,
-                email: user.rows[0].email,
-                isAdmin: user.rows[0].is_admin,
-                isActive: user.rows[0].is_active
-            
+        try{
+            const {login, password} = req.body;
+            const user = await pool.query("SELECT login_name, login_pass, person_name, email, is_admin, is_active FROM person_ where login_name ="+"'"+login+"'");
+            if (user.rows.length == 0){ 
+                return res.status(404).json({message: 'User not found'})
             }
-        })
-    } catch(e) {
-        res.status(500).json({ message: 'Что то пошло не так смотреть блок авторизация'})
-    }
+            const isPassValid = bcrypt.compareSync(password, user.rows[0].login_pass);
+            if (!isPassValid){
+                return res.status(400).json({message: 'Invalid password'})
+            }
+            const token = jwt.sign(
+                { login_name:user.rows[0].login_name},
+                cfg.secret,
+                { expiresIn:'2h'}
+            )
+            return res.json({
+                token,
+                user: {
+                    loginName: user.rows[0].login_name,
+                    personName: user.rows[0].person_name,
+                    email: user.rows[0].email,
+                    isAdmin: user.rows[0].is_admin,
+                    isActive: user.rows[0].is_active
+                
+                }
+            })
+        } catch(e) {
+            res.status(500).json({ message: 'Что то пошло не так смотреть блок авторизация'})
+        }
 });
 module.exports = router
