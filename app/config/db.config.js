@@ -7,7 +7,7 @@ module.exports = {
     database: "calendardb",
     dialect: "postgres",
     port: "8443",
-    max: 12,
+    max: 22,
     min: 0,
     idleTimeoutMillis: 260000000, /*  how long a client is allowed to remain idle before being closed */
     connectionTimeoutMillis: 2000

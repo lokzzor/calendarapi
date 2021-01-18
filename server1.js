@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cfg = require("./app/config/db.config"); // database
+const pg = require('pg');
 
 const app = express();
 app.use(cors());
@@ -16,6 +17,16 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization");
   next();   
 });
+/* Databasecheck */
+
+if (cfg.enable) {
+  const pool = new pg.Pool(cfg.pool);
+  pool.connect(function (err, client, release) {
+    if (err) { return console.error('Error acquiring client', err.stack);  }
+    console.log("Connected with Database " + cfg.pool.host + ":" + cfg.pool.port +" --- OK");
+    });
+} else console.log("PostgreSQL disable");
+
 
 /* Routes */
 app.get("/", (req, res) => { res.json({ message: "Welcome to application." }) });
@@ -28,5 +39,5 @@ app.use('/api/get', require('./app/routes/calendar'));
 
 
 /* PORT */
-const PORT = process.env.PORT || 1111;
+const PORT = process.env.PORT || 8444;
 app.listen(PORT, () => { console.log(`Server is running on port ${PORT}.`); });
