@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cfg = require("./app/config/db.config"); // database
-const pg = require('pg');
+const { Pool } = require('pg');
 
 const app = express();
 app.use(cors());
@@ -20,7 +20,7 @@ app.use(function(req, res, next) {
 /* Databasecheck */
 
 if (cfg.enable) {
-  const pool = new pg.Pool(cfg.pool);
+  const pool = new Pool (cfg.pool);
   pool.connect(function (err, client, release) {
     if (err) { return console.error('Error acquiring client', err.stack);  }
     console.log("Connected with Database " + cfg.pool.host + ":" + cfg.pool.port +" --- OK");
