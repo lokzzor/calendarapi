@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "prestart": "npm install",
-    "start": "nodemon server"
+    "start": "nodemon server1"
   },
   "keywords": [
     "node.js",
@@ -18,18 +18,17 @@
   "author": "alex",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "latest"
+    "nodemon": "2.0.7"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.9.2",
     "jsonwebtoken": "^8.5.1",
-    "moment": "latest",
+    "moment": "2.29.1",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3"
   },

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router()
 
 let cfg = require('../config/db.config');
-const { Pool, Client } = require('pg')
+const { Pool, Client } = require('pg');
 const moment =require('moment');
 
 if (cfg.enable) {
@@ -39,14 +39,14 @@ if (cfg.enable) {
             res.status(500).json({ message: 'Что то пошло не так смотреть блок календарь'})
         }
     });
-    router.post('/calendarpostevent', async (req, res, next) => {
+
+    router.get('/calendarnotevent', async (req, res, next) => {
         try{
-            const body = req.body.state; let start = moment(body.event_start).format("YYYY-MM-DD h:mm:ss"); let end = moment(body.event_end).format("YYYY-MM-DD h:mm:ss"); 
-            await pool.query("INSERT INTO event_ ( room_name, event_name, person_id, event_start, event_end) VALUES ('"+body.room_name+"','"+body.event_name+"',"+3+",'"+start+"','"+end+"');", (err, result) => {
+            await pool.query("SELECT count(*) FROM event_ where admin_login is NULL", (err, result) => {
                 if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
             });
         } catch(e) {
-            res.status(500).json({ message: 'Что то пошло не так смотреть блок календарь'})
+            res.status(500).json({ message: 'Что то пошло не так смотреть блок календарь количество событий'})
         }
     });
 }

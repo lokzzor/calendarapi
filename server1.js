@@ -12,17 +12,21 @@ app.use(cors({ allowedOrigins: cfg.allowed }));
 /* Headers */ 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "authorization, X-Requested-With, Origin, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "GET, PATCH, PUT, POST, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization");
   next();   
 });
 
 /* Routes */
 app.get("/", (req, res) => { res.json({ message: "Welcome to application." }) });
-app.use('/api/auth', require('./app/routes/auth.routes'));
+app.use('/api/auth', require('./app/routes/auth'));
+app.use('/api/get', require('./app/routes/weather'));
+app.use('/api/event', require('./app/routes/dictinary'));
+
 app.use('/api/get', require('./app/routes/first'));
 app.use('/api/get', require('./app/routes/calendar'));
 
+
 /* PORT */
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 1111;
 app.listen(PORT, () => { console.log(`Server is running on port ${PORT}.`); });
