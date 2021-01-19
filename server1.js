@@ -21,7 +21,7 @@ app.use(function(req, res, next) {
 
 if (cfg.enable) {
   const pool = new Pool (cfg.pool);
-  pool.connect(function (err, client, release) {
+  pool.connect(function (err) {
     if (err) { return console.error('Error acquiring client', err.stack);  }
     console.log("Connected with Database " + cfg.pool.host + ":" + cfg.pool.port +" --- OK");
     });
