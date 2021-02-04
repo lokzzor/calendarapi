@@ -23,7 +23,7 @@ if (cfg.enable) {
   const pool = new Pool (cfg.pool);
   pool.connect(function (err) {
     if (err) { return console.error('Error acquiring client', err.stack);  }
-    console.log("Connected with Database " + cfg.pool.host + ":" + cfg.pool.port +" --- OK");
+      console.log("Connected with Database " + cfg.pool.host + ":" + cfg.pool.port +" --- OK");
     });
 } else console.log("PostgreSQL disable");
 
@@ -31,10 +31,9 @@ if (cfg.enable) {
 /* Routes */
 app.get("/", (req, res) => { res.json({ message: "Welcome to application." }) });
 app.use('/api/auth', require('./app/routes/auth'));
-app.use('/api/get', require('./app/routes/weather'));
 app.use('/api/event', require('./app/routes/dictinary'));
-
-app.use('/api/get', require('./app/routes/first'));
+app.use('/api/get', require('./app/routes/weather'));
+app.use('/api/get', require('./app/routes/func-event'));
 app.use('/api/get', require('./app/routes/calendar'));
 
 

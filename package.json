@@ -29,6 +29,7 @@
     "express-validator": "^6.9.2",
     "jsonwebtoken": "^8.5.1",
     "moment": "2.29.1",
+    "moment-timezone": "^0.5.32",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3"
   },

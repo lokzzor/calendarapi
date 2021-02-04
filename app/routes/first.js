@@ -5,7 +5,7 @@ const { Pool } = require('pg')
 
 if (cfg.enable) {
     const pool =new Pool (cfg.pool);
-    router.get('/conectionbase', async (req, res, next) => {
+    /* router.get('/conectionbase', async (req, res, next) => {
         try{
             await pool.query("SELECT room_name, building_number, room_number, capacity, description FROM room_", function (err, result) {
                 if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
@@ -23,24 +23,7 @@ if (cfg.enable) {
             res.status(500).json({ message: 'Что то пошло не так смотреть блок общее'})
         }
     });
-    router.get('/room_event', async (req, res, next) => {
-        try{
-            await pool.query("SELECT room_name, COUNT(event_name) as countevent FROM event_ GROUP BY room_name;", function (err, result) {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
-            });
-        } catch(e) {
-            res.status(500).json({ message: 'Что то пошло не так смотреть блок общее'})
-        }
-    });
-    router.get('/room_building', async (req, res, next) => {
-        try{
-            await pool.query("SELECT building_number, COUNT(room_number) FROM room_ GROUP BY building_number", function (err, result) {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
-            });
-        } catch(e) {
-            res.status(500).json({ message: 'Что то пошло не так смотреть блок общее'})
-        }
-    });
+
     router.get('/event', async (req, res, next) => {
         try{
             await pool.query("SELECT event_id, room_name, event_name, person_id, first_date, time_start, time_end, day_of_week, last_date, admin_id FROM event_;", function (err, result) {
@@ -85,6 +68,6 @@ if (cfg.enable) {
         } catch(e) {
             res.status(500).json({ message: 'Что то пошло не так смотреть блок общее'})
         }
-    });
+    }); */
 }
 module.exports = router 
