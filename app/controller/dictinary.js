@@ -6,22 +6,27 @@ const moment =require('moment-timezone');
 class Dictinary{
     async CreateEvent (req,res){
         try{
-            const {event_name, room_name, person_name, event_start, event_end,checkedRepeat} = req.body.state;  let admin_login; let start; let end;            
+            const {event_name, room_name, person_login, event_start, event_end,checkedRepeat} = req.body.state;  let start; let end;            
             start = moment(event_start).tz("Europe/Moscow").format('YYYY-MM-DD HH:mm');
             end = moment(event_end).tz("Europe/Moscow").format('YYYY-MM-DD HH:mm');
-            if(person_name!=='guest'){
-                admin_login=person_name;
-                await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end, admin_login) VALUES ($1,$2,$3,$4,$5,$6)",[room_name, event_name, person_name, start, end, admin_login], (err, result) => {
-                    if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
-                });     
-            } else{ 
-                await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end) VALUES ($1,$2,$3,$4,$5)",[room_name, event_name, person_name, start, end], (err, result) => {
+            console.log(person_login)
+            if(person_login!=='Guest'){
+                const user = await pool.query("SELECT *  FROM person_ Where login_name=$1 and is_admin = true", [person_login]); // есть ли права
+                if (user.rows.length == 0){
+                    await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end) VALUES ($1,$2,$3,$4,$5)",[room_name, event_name, person_login, start, end], (err, result) => {
+                        if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
+                    }); 
+                } else{
+                    await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end, admin_login) VALUES ($1,$2,$3,$4,$5,$6)",[room_name, event_name, person_login, start, end, person_login], (err, result) => {
+                        if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
+                    });  
+                }
+            } else{
+                let personlogin='guest';
+                await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end) VALUES ($1,$2,$3,$4,$5)",[room_name, event_name, personlogin, start, end], (err, result) => {
                     if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
                 });  
             }
-            admin_login=null;
-            start='';
-            end='';
         } catch(e) {
             console.log("блок создания событий --"+e)
             res.status(500).json({ message: 'Что то пошло не так смотреть блок словарь создание события'})

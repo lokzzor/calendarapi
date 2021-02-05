@@ -21,10 +21,10 @@ class User{
             const hashPassword= await bcrypt.hashSync('admin', 8);
 
             if (admin.rows.length == 0){ 
-                await pool.query("INSERT INTO person_( login_name, login_pass, person_name, email, is_admin, is_active) VALUES ($1,$2,$3,$4,$5,$6)", ['admin', hashPassword, 'admin', 'admin@jinr.ru', true, true]);
+                await pool.query("INSERT INTO person_( login_name, login_pass, person_name, email, is_admin, is_active) VALUES ($1,$2,$3,$4,$5,$6)", ['admin', hashPassword, 'Admin', 'admin@jinr.ru', true, true]);
             }
             if (guest.rows.length == 0){ 
-                await pool.query("INSERT INTO person_( login_name, login_pass, person_name, email, is_admin, is_active) VALUES ($1,$2,$3,$4,$5,$6)", ['guest', hashPassword, 'guest', 'guest@jinr.ru', false, true]);
+                await pool.query("INSERT INTO person_( login_name, login_pass, person_name, email, is_admin, is_active) VALUES ($1,$2,$3,$4,$5,$6)", ['guest', hashPassword, 'Guest', 'guest@jinr.ru', false, true]);
             }
         } catch(e) {
             res.status(500).json({ message: 'Проблемма с первыми юзерами'});

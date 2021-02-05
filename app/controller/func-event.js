@@ -37,5 +37,26 @@ class Event{
             res.status(500).json({ message: 'Что то пошло не так смотреть блок общее'})
         }
     }
+    /* EVENT */
+    async EventNew (req,res){
+        try{
+
+            await pool.query("SELECT *  FROM event_ Where admin_login is NULL;", (err, result) => {
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
+            }); 
+
+        } catch(e) {
+            res.status(500).json({ message: 'Что то пошло не так смотреть блок EventNew'})
+        }
+    }
+    async EventOld (req,res){
+        try{
+            await pool.query("SELECT *  FROM event_ Where admin_login is not NULL;", (err, result) => {
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
+            }); 
+        } catch(e) {
+            res.status(500).json({ message: 'Что то пошло не так смотреть блок EventOld'})
+        }
+    }
 }
 module.exports = new Event()

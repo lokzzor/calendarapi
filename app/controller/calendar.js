@@ -3,9 +3,8 @@ const { Pool } = require('pg'); let cfg = require('../config/db.config'); const 
 class Calendar{
     async calendarSelect (req,res){
         try{
-
             await pool.query("SELECT *  FROM event_", (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
             });
 
         } catch(e) {
@@ -15,7 +14,7 @@ class Calendar{
     async sCalendarSelect (req,res){
         try{
             await pool.query("SELECT *  FROM event_ WHERE event_start::Date=current_date", (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
             });
         } catch(e) {
             res.status(500).json({ message: 'Что то пошло не так смотреть блок события дня'})

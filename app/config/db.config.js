@@ -1,12 +1,12 @@
 module.exports = {
 
   pool: {
-    host: "bmn-web.jinr.ru",
+    host: "localhost",
     user: "calendar",
     password: "calendar",
     database: "calendardb",
     dialect: "postgres",
-    port: "8443",
+    port: "5432",
     max: 30,
     min: 0,
     idleTimeoutMillis: 260000000, /*  how long a client is allowed to remain idle before being closed */
