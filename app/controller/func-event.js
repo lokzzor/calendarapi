@@ -58,5 +58,24 @@ class Event{
             res.status(500).json({ message: 'Что то пошло не так смотреть блок EventOld'})
         }
     }
+    async Remove (req,res){
+        try{
+            await pool.query("DELETE FROM event_ WHERE event_id=$1", [req.body.state], (err, result) => {
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }                
+            }); 
+        } catch(e) {
+            res.status(500).json({ message: 'Что то пошло не так смотреть блок удаления событий'})
+        }
+    }
+    async Ok (req,res){
+        try{
+            const {user, eventid} = req.body.state;
+            await pool.query("UPDATE event_ SET admin_login=$1 WHERE event_id=$2", [ user, eventid ], (err, result) => {
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }                
+            }); 
+        } catch(e) {
+            res.status(500).json({ message: 'Что то пошло не так смотреть блок одобрения событий'})
+        }
+    }
 }
 module.exports = new Event()
