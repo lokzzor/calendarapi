@@ -58,6 +58,15 @@ class Event{
             res.status(500).json({ message: 'Что то пошло не так смотреть блок EventOld'})
         }
     }
+    async EventSearch (req,res){
+        try{
+            await pool.query("SELECT *  FROM event_ Where event_name LIKE $1", [req.body.state+'%'], (err, result) => {
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { console.log(result.rows);res.send(result.rows); }                
+            }); 
+        } catch(e) {
+            res.status(500).json({ message: 'Что то пошло не так смотреть блок поиска событий'})
+        }
+    }
     async Remove (req,res){
         try{
             await pool.query("DELETE FROM event_ WHERE event_id=$1", [req.body.state], (err, result) => {

@@ -79,7 +79,7 @@ class User{
             const token = jwt.sign(
                 { login_name:user.rows[0].login_name},
                 cfg.secret,
-                { expiresIn:'3h'}
+                { expiresIn:'24h'}
             )
             return res.json({
                 token,
@@ -104,7 +104,7 @@ class User{
             const token = jwt.sign(
                 { login_name:user.rows[0].login_name},
                 cfg.secret,
-                { expiresIn:'2h'}
+                { expiresIn:'24h'}
             )
             return res.json({
                 token,

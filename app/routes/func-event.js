@@ -11,5 +11,5 @@ router.get('/calendar_event_new', Event.EventNew);
 router.get('/calendar_event_old', Event.EventOld);
 router.post('/event_remove', Event.Remove);
 router.post('/event_ok', Event.Ok);
-
+router.post('/calendar_event_search', Event.EventSearch);
 module.exports = router 
