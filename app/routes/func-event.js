@@ -12,4 +12,5 @@ router.get('/calendar_event_old', Event.EventOld);
 router.post('/event_remove', Event.Remove);
 router.post('/event_ok', Event.Ok);
 router.post('/calendar_event_search', Event.EventSearch);
+router.get('/calendarroommas', Event.getRoomNameMas);
 module.exports = router 

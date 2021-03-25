@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const cfg = require("./app/config/db.config"); // database
 const { Pool } = require('pg');
-
+const moment =require('moment');
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -17,16 +17,41 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization");
   next();   
 });
+
 /* Databasecheck */
+const pool = new Pool (cfg.pool);
+pool.on("connect", () => {
+  pool.on('error', err => { console.log("Если была активна но потом вырубилась - "+err);    update(); });
+});
+pool.on("end", () => {
+  console.log(moment().format('YYYY-MM-DD HH:mm')+" Connection End ");
+});
 
-if (cfg.enable) {
-  const pool = new Pool (cfg.pool);
-  pool.connect(function (err) {
-    if (err) { return console.error('Error acquiring client', err.stack);  }
-      console.log("Connected with Database " + cfg.pool.host + ":" + cfg.pool.port +" --- OK");
-    });
-} else console.log("PostgreSQL disable");
+(async () => {
+  const client = await pool.connect()
+  try {
+    console.log(moment().format('YYYY-MM-DD HH:mm')+" Connected with Database " + cfg.pool.host + ":" + cfg.pool.port +" --- OK");
+  } catch (e) {
+    console.error('Connection error --- ', err.stack);
+    client.release()
+    throw e
+  } finally {
+    client.release()
+  }
+})().catch(e => console.error("Сразу выключена --- "+e.stack))
 
+const update = async() => {
+  const client = await pool.connect()
+  try {
+    console.log(moment().format('YYYY-MM-DD HH:mm')+" Connected with Database " + cfg.pool.host + ":" + cfg.pool.port +" --- OK");
+  } catch (e) {
+    console.error('Connection error --- ', err.stack);
+    client.release()
+    throw e
+  } finally {
+    client.release()
+  }
+}
 
 /* Routes */
 app.get("/", (req, res) => { res.json({ message: "Welcome to application." }) });
