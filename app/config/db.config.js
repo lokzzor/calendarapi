@@ -1,21 +1,24 @@
 module.exports = {
 
   pool: {
-/*     host: "localhost",
+    /*  
+    host: "localhost",
     user: "calendar",
     password: "calendar",
-    database: "calendardb", */
+    database: "calendardb",
+    port: "5432",
+     */
     host: "bmn-web.jinr.ru",
     user: "calendar",
     password: "calendar",
     database: "calendardb",
-    dialect: "postgres",
-    //port: "5432",
     port: "8443",
+    dialect: "postgres",
     max: 30,
     min: 0,
-    idleTimeoutMillis: 260000000, /*  how long a client is allowed to remain idle before being closed */
-    connectionTimeoutMillis: 2000
+    idleTimeoutMillis: 2000, 
+    connectionTimeoutMillis: 21000
+
   },
   allowed: ['*'],
   secret: "secret-key-code",
