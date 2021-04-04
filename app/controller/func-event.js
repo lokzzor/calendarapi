@@ -22,7 +22,7 @@ class Event{
     async getRoomNameMas (req,res){
         try{
             await pool.query("SELECT array_agg(room_name) FROM room_;", (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); return res.send(a) } else { res.send(result.rows); }
+                if (err) { var a = []; a[0] = "Error"; return res.send(a) } else { res.send(result.rows); }
             });
         } catch(e) {
             res.status(500).json({ message: 'Что то пошло не так вывод комнат'})

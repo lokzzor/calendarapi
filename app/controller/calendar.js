@@ -4,7 +4,7 @@ class Calendar{
     async calendarSelect (req,res){
         try{
             await pool.query("SELECT *  FROM event_", (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
+                if (err) { var a = []; a[0] = "Error"; return res.send(a) } else { res.send(result.rows); }
             });
 
         } catch(e) {

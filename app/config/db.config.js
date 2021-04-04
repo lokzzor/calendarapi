@@ -14,11 +14,10 @@ module.exports = {
     database: "calendardb",
     port: "8443",
     dialect: "postgres",
-    max: 30,
+    max: 100,
     min: 0,
-    idleTimeoutMillis: 2000, 
-    connectionTimeoutMillis: 21000
-
+    idleTimeoutMillis: 0,
+    connectionTimeoutMillis: 0,
   },
   allowed: ['*'],
   secret: "secret-key-code",
