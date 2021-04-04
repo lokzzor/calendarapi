@@ -72,6 +72,9 @@ const PORT = process.env.PORT || 8444;
 app.listen(PORT, () => { console.log(`Server is running on port ${PORT}.`); });
 
 /* 
+sudo systemctl stop postgresql-13.service
+sudo systemctl restart postgresql-13.service
+
 const pool = new Pool (cfg.pool);
 pool.on("connect", () => {
   pool.on('error', err => { console.log("Если была активна но потом вырубилась - "+err);    update(); });
