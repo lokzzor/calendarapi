@@ -51,7 +51,7 @@ class Event{
         try{
 
             await pool.query("SELECT *  FROM event_ Where admin_login is NULL;", (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы EventNew -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
             }); 
 
         } catch(e) {
@@ -61,7 +61,7 @@ class Event{
     async EventOld (req,res){
         try{
             await pool.query("SELECT *  FROM event_ Where admin_login is not NULL;", (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы EventOld -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
             }); 
         } catch(e) {
             res.status(500).json({ message: 'Что то пошло не так смотреть блок EventOld'})
@@ -70,7 +70,7 @@ class Event{
     async EventSearch (req,res){
         try{
             await pool.query("SELECT *  FROM event_ Where event_name LIKE $1", [req.body.state+'%'], (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { console.log(result.rows);res.send(result.rows); }                
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы EventSearch -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }                
             }); 
         } catch(e) {
             res.status(500).json({ message: 'Что то пошло не так смотреть блок поиска событий'})
@@ -79,7 +79,7 @@ class Event{
     async Remove (req,res){
         try{
             await pool.query("DELETE FROM event_ WHERE event_id=$1", [req.body.state], (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }                
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы Remove -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }                
             }); 
         } catch(e) {
             res.status(500).json({ message: 'Что то пошло не так смотреть блок удаления событий'})
@@ -89,7 +89,7 @@ class Event{
         try{
             const {user, eventid} = req.body.state;
             await pool.query("UPDATE event_ SET admin_login=$1 WHERE event_id=$2", [ user, eventid ], (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }                
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы Ok -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }                
             }); 
         } catch(e) {
             res.status(500).json({ message: 'Что то пошло не так смотреть блок одобрения событий'})

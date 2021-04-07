@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "prestart": "npm install",
-    "start": "nodemon server1"
+    "start": "nodemon server"
   },
   "keywords": [
     "node.js",

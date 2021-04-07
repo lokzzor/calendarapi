@@ -4,16 +4,6 @@ const bcrypt = require ('bcrypt');
 const { validationResult } = require('express-validator');
 
 class User{
-    async ConectionToBase (req,res){
-        try{
-            await pool.query("SELECT NOW()", function (err, result) {
-                if (err) { return res.send(String(err).replace('error:', '')) } else { res.send(result.rows) }
-            });
-        } catch(e) {
-            res.status(500).json({ message: 'База лежит'});
-            console.log("База лежит!!")
-        }
-    }
     async FirstStart (req,res){
         try{
             const admin = await pool.query("SELECT login_name FROM person_ where login_name ='admin'");
@@ -40,7 +30,7 @@ class User{
             }
             const hashPassword= await bcrypt.hashSync(login_pass, 8);
             await pool.query("INSERT INTO person_( login_name, login_pass, person_name, email, is_admin, is_active) VALUES ($1,$2,$3,$4,$5,$6)", [login_name, hashPassword, person_name, email, is_admin, is_active], (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }                
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы при создании пользователя-- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }                
             });
         } catch(e) {
             res.status(500).json({ message: 'Что то пошло не так смотреть блок регистрация'})
@@ -52,7 +42,7 @@ class User{
             const { login_name, change_password } = req.body.state;
             const hashPassword= await bcrypt.hashSync(change_password, 8);
             await pool.query("UPDATE person_ SET login_pass=$1 WHERE person_name=$2", [hashPassword, login_name], (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }                
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы обновление пароля-- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }                
             });
         } catch(e) {
             res.status(500).json({ message: 'Что то пошло не так смотреть блок обновлени пароля'})

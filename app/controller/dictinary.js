@@ -13,9 +13,9 @@ class Dictinary{
             const user = await pool.query("SELECT * FROM person_ Where login_name=$1 and is_admin = true", [person_login]); let personlogin='guest';
 
             if(checkedRepeat === true && checkedAll === true){       repeat( fixstart, fixend ); }
-            else if(checkedRepeat === true && checkedAll === false){ repeat( start, end );       }
-            else if(checkedAll === true && checkedRepeat === false){ send(   fixstart, fixend ); }
-            else{                                                    send(   start, end );       }
+            else if(checkedRepeat === true && checkedAll === false){ repeat( start, end ); }
+            else if(checkedAll === true && checkedRepeat === false){ send( fixstart, fixend ); }
+            else{                                                    send( start, end ); }
 
             async function repeat(first, second) {
                 var tempstartmas=[];var tempendmas=[]; tempstartmas[0]=first; tempendmas[0]=second;
@@ -36,28 +36,28 @@ class Dictinary{
                                 if(person_login!=='Guest'){
                                     if (user.rows.length === 0){
                                         await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end) VALUES ($1,$2,$3,$4,$5)",[room_name, event_name, person_login, tempstartmas[i], tempendmas[i]], (err, result) => {
-                                            if (err) { var a = []; a[0] = String(err).replace('error:', ''); /* console.log("Ругань с базы -- "+err); */ return res.status(500).json({ message: a })} 
-                                            else { setTimeout(() => { res.send(result.rows); ;res.end(); }, 1000); }
+                                            if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы repeat-- "+err); return res.status(500).json({ message: a })} 
+                                            else {res.send(result.rows);}
                                         }); 
                                     } else{
                                         await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end, admin_login) VALUES ($1,$2,$3,$4,$5,$6)",[room_name, event_name, person_login, tempstartmas[i], tempendmas[i], person_login], (err, result) => {
                                             if(i==tempstartmas.length){ 
-                                                if (err) { var a = []; a[0] = String(err).replace('error:', ''); /* console.log("Ругань с базы CreateEvent-- "+err); */ return res.status(500).json({ message: a })} 
-                                                else { setTimeout(() => { res.send(result.rows); ;res.end(); }, 1000); }
+                                                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы CreateEvent admin-- "+err); return res.status(500).json({ message: a })} 
+                                                else {res.send(result.rows);}
                                             }
                                         });  
                                     }
                                 } else{
                                     await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end) VALUES ($1,$2,$3,$4,$5)",[room_name, event_name, personlogin, tempstartmas[i], tempendmas[i]], (err, result) => {
-                                        if(i==tempstartmas.length-1){ 
-                                            if (err) { var a = []; a[0] = String(err).replace('error:', ''); /* console.log("Ругань с базы CreateEvent-- "+err); */ return res.status(500).json({ message: a })} 
-                                            else { setTimeout(() => { res.send(result.rows); ;res.end(); }, 1000); }
+                                        if(i==tempstartmas.length){ 
+                                            if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы CreateEvent guest-- "+err);  return res.status(500).json({ message: a })} 
+                                            else { res.send(result.rows);}
                                         }
                                     });  
                                 }
                             }
                         }
-                    } else{
+                    } else{ //Week
                         for(let i=1;i<30;i++){
                             first = moment(first).tz("Europe/Moscow").add(repeatatintervals,'week').format('YYYY-MM-DD HH:mm');
                             second = moment(second).tz("Europe/Moscow").add(repeatatintervals,'week').format('YYYY-MM-DD HH:mm');
@@ -74,21 +74,21 @@ class Dictinary{
                                     if (user.rows.length == 0){
                                         await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end) VALUES ($1,$2,$3,$4,$5)",[room_name, event_name, person_login, tempstartmas[i], tempendmas[i]], (err, result) => {
                                             if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} 
-                                            else { setTimeout(() => { res.send(result.rows); ;res.end(); }, 200); }
+                                            else {res.send(result.rows);}
                                         }); 
                                     } else{
                                         await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end, admin_login) VALUES ($1,$2,$3,$4,$5,$6)",[room_name, event_name, person_login, tempstartmas[i], tempendmas[i], person_login], (err, result) => {
                                             if(i==tempstartmas.length){ 
-                                                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы CreateEvent-- "+err); return res.status(500).json({ message: a })} 
-                                                else { setTimeout(() => { res.send(result.rows); ;res.end(); }, 200); }
+                                                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы CreateEvent  admin -- "+err); return res.status(500).json({ message: a })} 
+                                                else {res.send(result.rows);}
                                             }
                                         });  
                                     }
                                 } else{
                                     await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end) VALUES ($1,$2,$3,$4,$5)",[room_name, event_name, personlogin, tempstartmas[i], tempendmas[i]], (err, result) => {
-                                        if(i==tempstartmas.length-1){ 
-                                            if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы CreateEvent-- "+err); return res.status(500).json({ message: a })} 
-                                            else { setTimeout(() => { res.send(result.rows); ;res.end(); }, 200); }
+                                        if(i==tempstartmas.length){ 
+                                            if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы CreateEvent  guest-- "+err); return res.status(500).json({ message: a })} 
+                                            else {res.send(result.rows);}
                                         }
                                     });  
                                 }
@@ -110,22 +110,22 @@ class Dictinary{
                                 if(person_login!=='Guest'){
                                     if (user.rows.length === 0){
                                         await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end) VALUES ($1,$2,$3,$4,$5)",[room_name, event_name, person_login, tempstartmas[i], tempendmas[i]], (err, result) => {
-                                            if (err) { var a = []; a[0] = String(err).replace('error:', ''); /* console.log("Ругань с базы -- "+err); */ return res.status(500).json({ message: a })} 
-                                            else { setTimeout(() => { res.send(result.rows); ;res.end(); }, 1000); }
+                                            if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err);  return res.status(500).json({ message: a })} 
+                                            else { setTimeout(() => { res.send(result.rows); ;res.end(); }, 100); }
                                         }); 
                                     } else{
                                         await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end, admin_login) VALUES ($1,$2,$3,$4,$5,$6)",[room_name, event_name, person_login, tempstartmas[i], tempendmas[i], person_login], (err, result) => {
                                             if(i==tempstartmas.length){ 
-                                                if (err) { var a = []; a[0] = String(err).replace('error:', ''); /* console.log("Ругань с базы CreateEvent-- "+err); */ return res.status(500).json({ message: a })} 
-                                                else { setTimeout(() => { res.send(result.rows); ;res.end(); }, 1000); }
+                                                if (err) { var a = []; a[0] = String(err).replace('error:', '');  console.log("Ругань с базы CreateEvent  admin-- "+err);  return res.status(500).json({ message: a })} 
+                                                else { setTimeout(() => { res.send(result.rows); ;res.end(); }, 100); }
                                             }
                                         });  
                                     }
                                 } else{
                                     await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end) VALUES ($1,$2,$3,$4,$5)",[room_name, event_name, personlogin, tempstartmas[i], tempendmas[i]], (err, result) => {
-                                        if(i==tempstartmas.length-1){ 
-                                            if (err) { var a = []; a[0] = String(err).replace('error:', ''); /* console.log("Ругань с базы CreateEvent-- "+err); */ return res.status(500).json({ message: a })} 
-                                            else { setTimeout(() => { res.send(result.rows); ;res.end(); }, 1000); }
+                                        if(i==tempstartmas.length){ 
+                                            if (err) { var a = []; a[0] = String(err).replace('error:', '');  console.log("Ругань с базы CreateEvent  guest-- "+err);  return res.status(500).json({ message: a })} 
+                                            else { res.send(result.rows); }
                                         }
                                     });  
                                 }
@@ -158,9 +158,9 @@ class Dictinary{
                                     }
                                 } else{
                                     await pool.query("INSERT INTO event_ (room_name, event_name, person_login, event_start, event_end) VALUES ($1,$2,$3,$4,$5)",[room_name, event_name, personlogin, tempstartmas[i], tempendmas[i]], (err, result) => {
-                                        if(i==tempstartmas.length-1){ 
-                                            if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы CreateEvent-- "+err); return res.status(500).json({ message: a })} 
-                                            else { setTimeout(() => { res.send(result.rows); ;res.end(); }, 200); }
+                                        if(i==tempstartmas.length){ 
+                                            if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы CreateEvent  guest-- "+err); return res.status(500).json({ message: a })} 
+                                            else { res.send(result.rows); }
                                         }
                                     });  
                                 }
@@ -200,7 +200,7 @@ class Dictinary{
         try{
             const {room_name, building_number, room_number, capacity, description} = req.body.state;
             await pool.query("INSERT INTO room_ ( room_name, building_number, room_number, capacity, description) VALUES ($1,$2,$3,$4,$5)",[room_name, building_number, room_number, capacity, description ], (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы CreateRoom -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
             }); 
         } catch(e) {
             res.status(500).json({ message: 'Что то пошло не так смотреть блок словарь создание комнаты'})

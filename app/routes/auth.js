@@ -5,7 +5,6 @@ const authMiddleware = require ('../middleware/auth.middleware');
 const { check, validationResult } = require('express-validator');
 
 
-router.get('/conectionbase', User.ConectionToBase);
 router.get('/firststart', User.FirstStart);
 router.post('/updatepassword',User.UpdatePassword);
 router.post('/createuser',

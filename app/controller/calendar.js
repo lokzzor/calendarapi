@@ -14,7 +14,7 @@ class Calendar{
     async sCalendarSelect (req,res){
         try{
             await pool.query("SELECT *  FROM event_ WHERE event_start::Date=current_date", (err, result) => {
-                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
+                if (err) { var a = []; a[0] = String(err).replace('error:', ''); console.log("Ругань с базы sCalendarSelect -- "+err); return res.status(500).json({ message: a })} else { res.send(result.rows); }
             });
         } catch(e) {
             res.status(500).json({ message: 'Что то пошло не так смотреть блок события дня'})
